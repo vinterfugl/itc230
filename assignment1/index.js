@@ -54,7 +54,7 @@ http.createServer(function(req, res) {
             break;
         case '/add':
             res.writeHead(200, {'Content-Type': 'text/plain'});
-            if (params.title.length < 1) {
+            if (params.title == undefined) {
                  res.end('Please enter a title to add');
             } else {
                 books.add(params.title);
