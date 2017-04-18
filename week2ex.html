@@ -1,0 +1,53 @@
+<html>
+    
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+    </script>
+</head>
+
+<script>
+    
+/*Add a date, a numeric, and a boolean field to your array*/
+
+var weather = [
+    { date : "April 1, 2017", temperature : 50, rain: true },
+    { date : "April 2, 2017", temperature : 46, rain: true },
+    { date : "April 3, 2017", temperature : 49, rain: true },
+    { date : "April 4, 2017", temperature : 53, rain: true },
+    { date : "April 5, 2017", temperature : 59, rain: false },
+    { date : "April 6, 2017", temperature : 51, rain: true }
+]
+
+/*Create functions to manipulate your sample data array;
+
+Return all data items*/
+
+$("html").append("<button id = 'all' onclick = 'allData()'>All Data</button>");
+
+function allData() {
+    console.log(weather);
+}
+    
+/*Return all data items with field matching one you specify*/
+    
+$("html").append("<button id = 'date' onclick = 'allDate()'>Filter Date</button>");
+
+function allDate() {
+            var dateData = [];
+            for (i = 0; i < weather.length; i = i + 1) {
+                dateData.push(weather[i].date);
+            }
+        console.log(dateData);
+    };
+
+$("html").append("<button id = 'temp' onclick = 'allTemp()'>Filter Temperature</button>");
+
+function allTemp() {
+            var tempData = [];
+            for (i = 0; i < weather.length; i = i + 1) {
+                tempData.push(weather[i].temperature);
+            }
+        console.log(tempData);
+    };
+
+</script>
