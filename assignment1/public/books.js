@@ -7,6 +7,8 @@ let books = [
     {title : "the irony of american history", author : "reinhold niebuhr", pubdate : 1951},
 ];
 
+var totalBooks = books.length;
+
 let get = (title) => {
     return books.find((item) => {
         return item.title == title; 
@@ -18,6 +20,10 @@ let cut = (title) => {
     return books.splice(i, 1);
 }
 
+let add = (title) => {
+    return books.push({title : title, author : "unknown", pubdate : "unknown"});
+}
+
 exports.get = (title) => {
     return books.find((item) => {
         return item.title == title;
@@ -27,4 +33,12 @@ exports.get = (title) => {
 exports.cut = (title) => {
     i = books.indexOf(get(title));
     return books.splice(i, 1);
+}
+
+exports.add = (title) => {
+    return books.push({title : title, author : "unknown", pubdate : "unknown"});
+}
+
+exports.counter = function() {
+    return books.length;
 }

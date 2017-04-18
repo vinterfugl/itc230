@@ -43,20 +43,29 @@ http.createServer(function(req, res) {
             }
             break;
          case '/delete':
-            console.log(books.length + " books left");
+            console.log(books.counter() + " books left");
             res.writeHead(200, {'Content-Type': 'text/plain'});
             if (books.get(params.title) == undefined) {
                 res.end("Cannot delete " + params.title + ", file cannot be found")
             } else {
                 books.cut(params.title);
-                res.end(params.title + " deleted. " + books.length + " books remaining.")
+                res.end(params.title + " deleted. " + books.counter() + " books remaining.")
             }
             break;
-        default:
+        case '/add':
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            if (params.title.length < 1) {
+                 res.end('Please enter a title to add');
+            } else {
+                books.add(params.title);
+                console.log(books.get(params.title));
+                res.end(params.title + ' was added to the booklist.  List now contains ' + books.counter() + " books.");
+            }
+            break;
+         default:
             res.writeHead(404, {'Content-Type': 'text/plain'});
             res.end('Not found');
             break;
-            
        
             /*
         case '/about':
