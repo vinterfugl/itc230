@@ -1,0 +1,16 @@
+{
+  "name": "assignment3",
+  "version": "1.1.0",
+  "description": "week 3 assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vinterfugl",
+  "license": "N/A",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0"
+  }
+}
