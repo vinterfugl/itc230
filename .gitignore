@@ -1,3 +1,6 @@
+#ignore files installed by npm
+node_modules
+
 # ignore packages installed by npm node_modules
 
 # put any other files you don't want to check in here,

@@ -1,0 +1,30 @@
+<html>
+<body>
+  <h2>Details for {{title}}</h2>
+  {{#if result}}
+    <li>Title: {{ result.title }}
+    <li>Author: {{ result.author }}
+    <li>Pubdate: {{ result.pubdate }}
+        
+   <!--<form method="post" action="/delete">
+        <input type="button"onclick = "deleteBook" name = "xyz" value="delete" />
+    </form>
+    
+    <script>
+    
+    function deleteBook(){
+        return {{result.title}} ;
+    }
+        
+    </script>
+        
+    <!--<form method="post" action="/delete">
+        <input type="button" name = "xyz" value="delete" />
+    </form>-->
+        
+  {{else}}
+    Book not found    
+    {{/if}}
+        
+</body>
+</html> 
