@@ -1,0 +1,14 @@
+<html>
+<body>
+     {{#if result}}
+    <h2>Book Added "{{title}}" </h2>
+    <li>Title: {{ result.title }}
+    <li>Author: {{ result.author }}
+    <li>Pubdate: {{ result.pubdate }}
+        
+  {{else}}
+    Book title must contain at least one character to be entered! 
+    {{/if}}
+        
+</body>
+</html> 

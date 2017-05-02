@@ -27,13 +27,26 @@ app.get('/get', function(req,res){
    // res.send('search: ' + req.query['title']);
     let result = books.get(req.query.title);
     console.log(req.query.title);
-    res.render('details', {title: req.query.title, result: result })
+    res.render('details', {title: req.query.title, result: result });
 });
 
-/*app.post('/delete', function(req,res){
+app.get('/add', function(req,res){
+    let result = req.query.title;
+    if (result.length < 1) {
+        res.render('added')
+    } else {
+    console.log(result);
+    books.add(result);
+    console.log(books.get(result));
+    res.render('added', {title: req.query.title, result: books.get(result) });
+    }
+});
+
+app.post('/delete', function(req,res){
+    console.log(res);
     //console.log(books.counter() + " books left");
     //let deleted = books.get(req.name);
-    console.log(req); 
+    //console.log(req); 
     
     //books.cut(books.get(title));
     //res.end(books.get(title) + " deleted");
@@ -44,9 +57,8 @@ app.get('/get', function(req,res){
             } else {
                 books.cut(params.title);
                 res.end(params.title + " deleted. " + books.counter() + " books remaining.")
-            };
+            };*/
 });
-*/
 
 
 
