@@ -43,7 +43,12 @@ app.get('/add', function(req,res){
 });
 
 app.post('/delete', function(req,res){
-    console.log(res);
+    let title = req.body.title;
+    console.log(title);
+    books.cut(title);
+    console.log(books.counter() + " booked left");
+    res.type("text/plain");
+    res.send(title + " deleted");
     //console.log(books.counter() + " books left");
     //let deleted = books.get(req.name);
     //console.log(req); 

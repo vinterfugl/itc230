@@ -17,7 +17,11 @@ let get = (title) => {
 
 let cut = (title) => {
     i = books.indexOf(get(title));
+    if (i < 0) {
+        return books;
+    } else {
     return books.splice(i, 1);
+    }
 }
 
 let add = (title) => {
@@ -32,7 +36,11 @@ exports.get = (title) => {
 
 exports.cut = (title) => {
     i = books.indexOf(get(title));
+    if (i < 0) {
+        return books;
+    } else {
     return books.splice(i, 1);
+    }
 }
 
 exports.add = (title) => {
