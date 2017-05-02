@@ -32,14 +32,10 @@ app.get('/get', function(req,res){
 
 app.get('/add', function(req,res){
     let result = req.query.title;
-    if (result.length < 1) {
-        res.render('added')
-    } else {
     console.log(result);
     books.add(result);
     console.log(books.get(result));
     res.render('added', {title: req.query.title, result: books.get(result) });
-    }
 });
 
 app.post('/delete', function(req,res){
@@ -49,20 +45,6 @@ app.post('/delete', function(req,res){
     console.log(books.counter() + " booked left");
     res.type("text/plain");
     res.send(title + " deleted");
-    //console.log(books.counter() + " books left");
-    //let deleted = books.get(req.name);
-    //console.log(req); 
-    
-    //books.cut(books.get(title));
-    //res.end(books.get(title) + " deleted");
-    
-    /*res.writeHead(200, {'Content-Type': 'text/plain'});
-            if (books.get(params.title) == undefined) {
-                res.end("Cannot delete " + params.title + ", file cannot be found")
-            } else {
-                books.cut(params.title);
-                res.end(params.title + " deleted. " + books.counter() + " books remaining.")
-            };*/
 });
 
 

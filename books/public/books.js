@@ -25,7 +25,11 @@ let cut = (title) => {
 }
 
 let add = (title) => {
+    if (title.length < 1) {
+            return books;
+    } else {
     return books.push({title : title, author : "unknown", pubdate : "unknown"});
+    }
 }
 
 exports.get = (title) => {
@@ -44,7 +48,11 @@ exports.cut = (title) => {
 }
 
 exports.add = (title) => {
+    if (title.length < 1) {
+            return books;
+    } else {
     return books.push({title : title, author : "unknown", pubdate : "unknown"});
+    }
 }
 
 exports.counter = function() {
