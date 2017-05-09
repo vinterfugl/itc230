@@ -16,7 +16,7 @@ app.use(require("body-parser").urlencoded({extended: true}));
 
 app.get('/', function(req,res){
 	let allBooks = books.allBooks;
-	console.log(allBooks);
+	//console.log(allBooks);
 	res.locals.allBooks = allBooks;
     res.render('home');
 });
@@ -48,8 +48,6 @@ app.post('/delete', function(req,res){
     //res.type("text/plain");
     res.render("deleted", {title});
 });
-
-
 
 app.use(function(req,res) {
     res.type('text/plain');

@@ -1,0 +1,14 @@
+<h2>Update Information for "{{info.title}}"</h2>
+
+<form method="get" action="/get">
+	Title:<br />
+	<input type="text" name="title" placeholder={{{info.title}}} /><br />
+
+	Author:<br />
+	<input type="text" name="author" placeholder={{{info.author}}} /><br />
+	
+	Publish Date:<br />
+	<input type="text" name="pubdate" placeholder={{{info.pubdate}}} /><br />
+	
+	<input type="submit" value="save changes" />
+</form>
