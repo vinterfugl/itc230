@@ -58,3 +58,5 @@ exports.add = (title) => {
 exports.counter = function() {
     return books.length;
 }
+
+exports.allBooks = books;

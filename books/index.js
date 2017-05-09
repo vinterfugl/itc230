@@ -8,13 +8,16 @@ app.set("view engine", ".html");
 let http = require("http"),
     fs = require('fs'),
     qs = require('querystring'),
-    books = require('./public/books');
+    books = require('./library/books');
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 app.use(require("body-parser").urlencoded({extended: true})); 
 
 app.get('/', function(req,res){
+	let allBooks = books.allBooks;
+	console.log(allBooks);
+	res.locals.allBooks = allBooks;
     res.render('home');
 });
 
