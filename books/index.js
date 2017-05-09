@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 let handlebars = require("express-handlebars");
-app.engine(".html", handlebars({extername: '.html'}));
+app.engine(".html", handlebars({extname: '.html', defaultLayout: "main"}));
 app.set("view engine", ".html");
 
 let http = require("http"),
@@ -43,11 +43,10 @@ app.get('/add', function(req,res){
 
 app.post('/delete', function(req,res){
     let title = req.body.title;
-    console.log(title);
     books.cut(title);
-    console.log(books.counter() + " booked left");
-    res.type("text/plain");
-    res.send(title + " deleted");
+    console.log(books.counter() + " books left");
+    //res.type("text/plain");
+    res.render("deleted", {title});
 });
 
 
