@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint **/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-      
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "vinterfugl",
   "license": "N/A",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.10.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

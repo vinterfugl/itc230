@@ -2,9 +2,11 @@ let books = [
     {title : "dune", author : "frank herbert", pubdate : 1969},
     {title : "it", author : "stephen king", pubdate : 1975},
     {title : "moby dick", author : "herman melville", pubdate : 1851},
-    {title : "american gods", author : "Niel Gaiman", pubdate : 2001},
+    {title : "american gods", author : "niel gaiman", pubdate : 2001},
     {title : "the great gatsby", author : "f scott fitzgerald", pubdate : 1925},
     {title : "the irony of american history", author : "reinhold niebuhr", pubdate : 1951},
+	{title: "stardust", author: "niel gaiman", pubdate: 1996},
+	{title: "the abolition of man", author: "c s lewis", pubdate: "1937"},
 ];
 
 var totalBooks = books.length;
