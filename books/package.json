@@ -11,6 +11,8 @@
   "license": "N/A",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "connect-rest": "^2.11.8",
+    "cors": "^2.8.3",
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "mongoose": "^4.10.0"
