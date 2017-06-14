@@ -1,17 +1,201 @@
-<h2> Current Booklist</h2>
+<div class = 'container'>
+	<div id = 'root'>   </div>
+</div>
 
-<form method="get" action="/get">
-        <input type="text" name="title" placeholder="enter book title" />
-        <input type="submit" value="search" />
-    </form>
-<ul>
-	{{#each allBooks}}
-	<li><a href="/get?title={{{title}}}">{{title}}</a></li>
-	{{/each}}
-</ul>
-    
-    <form method="get" action="/add">
-        <input type="text" name="title" placeholder="enter new book title" />
-        <input type="submit" value="add" />
-    </form>
-  
+<script type = 'text/babel'>
+
+//defining ItemList start
+const ItemList = ({items, filter, show}) => {
+		// return items that match search entry field, or all items if no entry
+		const itemNodes = items.map((item) => {
+			if (!filter || item.title.toLowerCase().includes(filter)) {
+				return <li id = {item._id} key = {item._id} onClick = {show}>{item.title}</li>
+			};
+		});
+		return <div id = "bookList"><ul>{itemNodes}</ul></div>;
+};
+//defining ItemList end
+
+//const $addForm = $("#addForm");
+
+//defining ItemDetails start
+class ItemDetails extends React.Component {
+	constructor(props) {
+		super(props);
+		// state values must not be 'unidefined', to avoid 'uncontrolled' from warning
+		this.state = {
+			_id: this.props.item._id || "",
+			title: this.props.item.title || "",
+			author: this.props.item.author || "",
+			pubdate: this.props.item.pubdate || ""
+		};
+		this.handleChange = this.handleChange.bind(this);
+		this.handleSave = this.handleSave.bind(this);
+		this.handleDelete = this.handleDelete.bind(this);
+		this.handleClear = this.handleClear.bind(this);
+	}
+	
+		
+	componentWillReceiveProps(nextProps) {
+		this.setState({_id: nextProps.item._id || ""})
+		this.setState({title: nextProps.item.title || ""})
+		this.setState({author: nextProps.item.author || ""})
+		this.setState({pubdate: nextProps.item.pubdate || ""})
+	}
+	
+	handleChange (event) {
+		this.setState({[event.target.name]: event.target.value});
+		};
+	
+	
+	handleSave(event) {
+			//pass local state to app-level for saving to data array
+		this.props.save({_id: this.state._id, title: this.state.title, author: this.state.author, pubdate: this.state.pubdate});
+	};
+		
+	handleDelete(event) {
+		this.props.delete(this.state._id);
+		this.handleClear
+	};
+	
+	handleClear(event) {
+		this.setState({_id: ""});
+		this.setState({title: ""});
+		this.setState({author: ""});
+		this.setState({pubdate: ""});
+	}
+	
+	render() {
+		
+		console.log(this.state.title);
+		/*if (!this.state.title) {*/
+			return (
+			<div id = "addForm">
+				
+					<input type = "hidden" name = "_id" value = {this.state._id} onChange = {this.handleChange} readOnly />
+					<input type = "text" name = "title" placeholder = "title" value = {this.state.title} onChange = {this.handleChange} />
+					<input type = "text" name = "author" placeholder = "author" value = {this.state.author} onChange = {this.handleChange} />
+					<input type = "text" name = "pubdate" placeholder = "publish date" value = {this.state.pubdate} onChange = {this.handleChange} />
+					<p/>
+					<br />
+					
+				
+					<button onClick = {this.handleClear}>Clear</button> 
+					<button onClick = {this.handleDelete}>Delete</button>
+					<button onClick = {this.handleSave}>Save</button>
+				
+			</div>
+			);
+	};
+};
+//defining ItemDetails end
+
+//defining SearchForm start
+class SearchForm extends React.Component {
+	
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+	};
+	
+	handleChange (event) {
+		this.props.onEntryChange(event.target.value);
+	}
+	
+	render() {
+			return (
+				<div id = "searchBox">
+					<input
+						type = "text" placeholder = "enter search term"
+						value = {this.props.entry}
+						onChange = {this.handleChange}
+					/>
+				</div>
+			);
+		}
+};
+//defining SearchForm end
+
+//BookApp start
+class BookApp extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			data: {{{books}}},
+			filter: "",
+			curItem: {}
+		};
+		//console.log(this.state.data)
+		this.onSearchChange = this.onSearchChange.bind(this);
+		this.onSave = this.onSave.bind(this);
+		this.onDelete = this.onDelete.bind(this);
+	};
+	
+	onSearchChange(entry) {
+		this.setState({filter: entry.toLowerCase() });
+	};
+
+	onDelete(id) {
+			// filter all items except the one to be removed
+			const remainder = this.state.data.filter((item) => {
+				return item._id !== id;
+			});
+			// Save state with new array
+			this.setState({data: remainder});
+			this.setState({curItem: {}});
+	};
+
+	onSave(newItem) {
+			let newData;
+			console.log(this.state.data);
+			if (!newItem._id) {
+				newData = this.state.data;
+				newItem._id = newData.length;
+				newData.push(newItem);
+			} else {
+				newData = this.state.data.map((item) => {
+					if (item._id === newItem._id) {
+						item = newItem;
+					}
+					return item;
+				});
+			}
+			
+			this.setState({data: newData});	
+		}
+
+	onClear(event) {
+		this.setState({filter: ""});
+	};
+
+	showDetails(event) {
+		let editItem = this.state.data.find((item) => {
+			return item._id == event.target.id;
+		});
+		this.setState({curItem: editItem});
+		console.log(editItem);
+	};
+
+
+	render() {
+		return <div id = "allStuff">
+			
+				<SearchForm entry = {this.state.entry} onEntryChange = {this.onSearchChange} />
+			
+				<ItemList
+					items = {this.state.data}
+					filter = {this.state.filter}
+					show = {this.showDetails.bind(this)}
+				/>
+			
+				<ItemDetails item = {this.state.curItem} save = {this.onSave} clear = {this.onClear} save = {this.onSave} delete = {this.onDelete} clear = {this.onClear} />
+			
+			</div>;
+		}
+}
+//BookApp end
+
+ReactDOM.render(<BookApp />, document.getElementById('root'));
+
+</script>

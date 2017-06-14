@@ -1,0 +1,17 @@
+<h2> Current Booklist</h2>
+
+<form method="get" action="/get">
+        <input type="text" name="title" placeholder="enter book title" />
+        <input type="submit" value="search" />
+    </form>
+<ul>
+	{{#each allBooks}}
+	<li><a href="/get?title={{{title}}}">{{title}}</a></li>
+	{{/each}}
+</ul>
+    
+    <form method="get" action="/add">
+        <input type="text" name="title" placeholder="enter new book title" />
+        <input type="submit" value="add" />
+    </form>
+  

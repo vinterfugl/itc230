@@ -1,0 +1,118 @@
+<div class = 'container'>
+	<div id = 'root'>   </div>
+</div>
+
+<script type = 'text/babel'>
+
+//defining ItemDetails start
+	class ItemDetails extends React.Component {
+		constructor(props) {
+			super(props);
+			// state values must not be 'unidefined', to avoid 'uncontrolled' from warning
+			this.state = {
+				_id: this.props.item._id || "",
+				title: this.props.item.title || "",
+				author: this.props.item.author || "",
+				pubdate: this.props.item.pubdate || ""
+			};
+		}
+		
+		componentWillReceiveProps(nextProps) {
+			this.setState({_id: nextProps.item._id || ""})
+			this.setState({title: nextProps.item.title || ""})
+			this.setState({author: nextProps.item.author || ""})
+			this.setState({pubdate: nextProps.item.pubdate || ""})
+		}
+		
+		render() {
+			return (
+			<div>
+				<h3>Details:</h3>
+					<ul>
+						<li>{this.state.title}</li>
+						<li>{this.state.author}</li>
+						<li>{this.state.pubdate}</li>
+					</ul>
+			</div>
+			);
+		}
+	}
+//defining ItemDetails end
+
+//defining ItemList start
+const ItemList = ({items, filter, show}) => {
+		// return items that match search entry field, or all items if no entry
+		const itemNodes = items.map((item) => {
+			if (!filter || item.title.toLowerCase().includes(filter)) {
+				return <li id = {item._id} key = {item._id} onClick = {show}>{item.title}</li>
+			};
+		});
+		return <ul>{itemNodes}</ul>;
+};
+//defining ItemList end
+
+//defining SearchForm start
+class SearchForm extends React.Component {
+	
+	constructor(props) {
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+	};
+	
+	handleChange (event) {
+		this.props.onEntryChange(event.target.value);
+	}
+	
+	render() {
+			return (
+				<div>
+					<input
+						type = "text" placeholder = "enter search term"
+						value = {this.props.entry}
+						onChange = {this.handleChange}
+					/>
+				</div>
+			);
+		}
+};
+//defining SearchForm end
+
+//BookApp start
+class BookApp extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			data: {{{books}}},
+			filter: "",
+			curItem: {}
+		};
+
+		this.onSearchChange = this.onSearchChange.bind(this);
+	};
+	
+	onSearchChange(entry) {
+		this.setState({filter: entry.toLowerCase() });
+	};
+	
+	// Render JSX
+	render() {
+		return <div>
+			
+				<SearchForm entry = {this.state.entry} onEntryChange = {this.onSearchChange} />
+			
+				<ItemList
+					items = {this.state.data}
+					filter = {this.state.filter}
+				/>
+			
+				<ItemDetails item = {this.state.curItem} />
+			
+			</div>;
+		}
+}
+//BookApp end
+
+ReactDOM.render(<BookApp />, document.getElementById('root'));
+
+</script>

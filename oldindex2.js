@@ -1,21 +1,22 @@
 'use strict'
-
 const express = require("express");
 const app = express();
 let handlebars = require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html', defaultLayout: "main"}));
 app.set("view engine", ".html");
 
+let http = require("http"),
+    fs = require('fs'),
+    qs = require('querystring'),
+    libFunctions = require('./library/books');
+
 let Book = require("./models/books");
+
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
 app.use(require("body-parser").urlencoded({extended: true})); 
 app.use('/api', require('cors')());
-
-app.use((err, req, res, next) => {
-	console.log(err)
-})
 
 //testing a thing, delete this later!
 
@@ -24,14 +25,21 @@ app.use((err, req, res, next) => {
 app.get('/', (req,res) => {
 	Book.find((err,books) => {
 		if (err) return next(err);
-		//console.log(books);
-		res.render('home', {books: JSON.stringify(books)});
+		console.log(books);
+		let allData = {
+			books: books.map
+			(function(book){
+				return {
+					title: book.title,
+					author: book.author,
+					pubdate: book.pubdate,
+				}
+			})
+		};
+		let allBooks = allData.books;
+		res.locals.allBooks = allBooks;
+		res.render('home', allBooks);
 	})
-});
-
-app.get('/about', function(req,res){
-    res.type('text/plain');
-    res.send('About page');
 });
 
 app.get('/api/v1/books', (req,res) => {
@@ -47,6 +55,22 @@ app.get('/api/v1/books', (req,res) => {
 			}
 		}));
 	});
+});
+
+
+
+app.get('/about', function(req,res){
+    res.type('text/plain');
+    res.send('About page');
+});
+
+app.get('/get', function(req,res){
+	Book.find({"title": (req.query.title)}, function(err, item) {
+		if(err) return next(err);
+		let result = item[0];
+		console.log(result);
+		res.render('details', {title: req.query.title, result: result });
+	})
 });
 
 app.get('/api/v1/book/:title', (req, res, next) => {
@@ -80,6 +104,23 @@ app.get('/api/v1/book/:title', (req, res, next) => {
 	});	
 });
 
+
+
+
+app.get('/add', function(req,res){
+	let result = req.query.title;
+    console.log(result);
+	let newBook = Book({
+		title: result
+	});
+	newBook.save(function(err) {
+		if(err) throw err;
+		
+		console.log("Book added!");
+		res.render('added', {title: req.query.title, result: result});
+	});
+});
+
 app.get('/api/v1/add/:title', (req,res, next) => {
 	let title = Book({ title: req.params.title });
 	//console.log(title);
@@ -91,6 +132,16 @@ app.get('/api/v1/add/:title', (req,res, next) => {
 	});
 });
 
+
+
+app.post('/delete', function(req,res){
+	let title = req.body.title;
+	Book.remove({ title: req.body.title }, function(err) {
+		if (err) throw err;
+		res.render('deleted', {title});
+	});
+});
+	
 app.get('/api/v1/delete/:title', (req,res, next) => {
 	Book.remove({"title": req.params.title }, (err, result) => {
 		if (err) return next(err);
@@ -98,6 +149,9 @@ app.get('/api/v1/delete/:title', (req,res, next) => {
 	});
 });
 	
+	
+	
+
 app.use(function(req,res) {
     res.type('text/plain');
     res.status(404);

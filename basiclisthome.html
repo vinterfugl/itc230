@@ -1,0 +1,79 @@
+<div class = 'container'>
+	<div id = 'root'>   </div>
+</div>
+
+<script type = 'text/babel'>
+
+//BookApp start
+	class BookApp extends React.Component {
+
+		constructor(props) {
+			//Pass props to parent class
+			super(props);
+			this.state = {
+				data: {{{books}}},
+				filter: ""
+			};
+			console.log(this.state);
+
+		}
+	
+	render() {
+			// Render JSX
+		return <div>
+			
+			<span>
+				<ItemList
+					items = {this.state.data}
+				/>
+			</span>
+			
+			</div>;
+		
+		}
+	
+}
+//BookApp end
+
+//ItemDetails start
+	class ItemDetails extends React.Component {
+		constructor(props) {
+			super(props);
+			// state values must not be 'unidefined', to avoid 'uncontrolled' from warning
+			this.state = {
+				_id: this.props.item._id || "",
+				title: this.props.item.title || "",
+				author: this.props.item.author || "",
+				pubdate: this.props.item.pubdate || ""
+			};
+			
+		}
+		
+		componentWillReceiveProps(nextProps) {
+			this.setState({_id: nextProps.item._id || ""})
+			this.setState({title: nextProps.item.title || ""})
+			this.setState({author: nextProps.item.author || ""})
+			this.setState({pubdate: nextProps.item.pubdate || ""})
+		}
+		
+		
+		
+	}
+//ItemDetails end
+
+// UI elements
+
+const ItemList = ({items, filter, show}) => {
+		// return items that match search entry field, or all items if no entry
+		const itemNodes = items.map((item) => {
+			if (!filter || item.title.toLowerCase().includes(filter)) {
+				return <li id = {item._id} key = {item._id} onClick = {show}>{item.title}</li>
+			}
+		});
+		return <ul>{itemNodes}</ul>;
+	}
+
+
+ReactDOM.render(<BookApp />, document.getElementById('root'));
+
+</script>
