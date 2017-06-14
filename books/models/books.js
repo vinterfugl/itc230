@@ -9,7 +9,7 @@ var mySchema = mongoose.Schema({
 	title: { type: String, required: true },
 	author: String,
 	count: Number,
-	pubdate: Date
+	pubdate: Number
 });
 
 module.exports = mongoose.model('Book', mySchema);
